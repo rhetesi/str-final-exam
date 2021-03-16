@@ -16,6 +16,12 @@ export class UserListComponent implements OnInit {
   phrase: string = '';
   filterKey: string = 'name';
 
+  // Sorter
+  columnHead: string = '';
+  direction: boolean = false;
+  sortColumn: string = '';
+  sortDirect: string = 'asc';
+
   constructor(
     private userService: UserService,
   ) { }
@@ -26,5 +32,23 @@ export class UserListComponent implements OnInit {
   onDelete(user: User) {
     this.userService.remove(user);
   }
+
+
+  currentHead: string = 'id';
+
+  onColumnSelect(columnHead: string): void{
+    this.sortColumn = columnHead;
+    if (columnHead !== this.currentHead) {
+      this.sortDirect = 'asc'
+    }
+
+    if (columnHead == this.currentHead) {
+      this.sortDirect == 'asc' ?
+      this.sortDirect = 'dsc' :
+        this.sortDirect = 'asc';
+    }
+    this.currentHead = columnHead;
+    }
+
 
 }
