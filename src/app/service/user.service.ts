@@ -45,7 +45,10 @@ export class UserService {
    * Create a user in the database.
    * The method is: this.http.post
    */
-
+  create(user: User): void {
+    this.http.post<User>(`${this.endpoint}`, user)
+    .subscribe(() => this.getAll());
+  }
 
 
   /**
