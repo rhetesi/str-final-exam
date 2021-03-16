@@ -1,6 +1,22 @@
 <div class="row">
   <div class="col-12 mt-2">
     <h2>User List</h2>
+    <!-- Filter -->
+    <div class="card">
+      <div class="card-header card-header-info">
+        <!-- <h4 class="card-title ">Filter</h4> -->
+        <div class="d-flex p-2 mb-3 filter__group">
+          <input [(ngModel)]="phrase" class="form-control" type="text" placeholder="Keresés..." style="width: 200px;">
+          <select [(ngModel)]="filterKey" class="form-control mr-3 filter__select px-3" style="width: 150px;">
+            <option value="name">name</option>
+            <option value="description">email</option>
+            <option value="featured">address</option>
+            <option value="active">active</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!-- Filter end -->
     <table class="table table-striped">
       <thead>
         <tr>
@@ -13,7 +29,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of users$ | async">
+        <tr *ngFor="let user of users$ | async | filter:phrase:filterKey">
           <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
