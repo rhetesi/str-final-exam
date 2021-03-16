@@ -1,36 +1,33 @@
 <div class="row">
   <div *ngIf="user$ | async as user" class="col-6 offset-3 mt-3">
     <h2>Update / Create User</h2>
-    <form #userForm="ngForm">
+    <form #userForm="ngForm" (ngSubmit)="onUpdate(userForm, user)">
       <input name="id" type="hidden" [(ngModel)]="user.id">
       <div class="form-group">
         <label>Name</label>
         <!-- Validation: min 8 char, max 40 char, required -->
-        <input
-        class="form-control"
-        type="text"
-        name="name"
-        [(ngModel)]="user.name">
+        <input class="form-control" type="text" name="name" [(ngModel)]="user.name"
+          pattern="^[A-ZÁÉÓÖŐÜÚŰÍ][a-záéüöóőúí\s].{6,38}" required>
       </div>
+      <div [hidden]="userForm.controls.name?.valid" class="error-message m-1">A név nagybetűvel kezdődjön és minimum 8
+        maximum 40 karakter hosszú legyen!</div>
       <div class="form-group">
         <label>Email</label>
         <!-- Validation: valid email, required.
           Help: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript -->
-          <input
-          class="form-control"
-          type="text"
-          name="email"
-          [(ngModel)]="user.email">
-        </div>
-        <div class="form-group">
-          <label>Address</label>
-          <!-- Validation: min 8 char, max 100 char, required -->
-          <input
-          class="form-control"
-          type="text"
-          name="address"
-          [(ngModel)]="user.address">
+        <input class="form-control" type="text" name="email" [(ngModel)]="user.email"
+          pattern="[\w\.]+@([\w-]+\.)+[\w-]{2,6}" required>
       </div>
+      <div [hidden]="userForm.controls.email?.valid" class="error-message m-1">Adjon meg egy érvényes e-mail címet!
+      </div>
+      <div class="form-group">
+        <label>Address</label>
+        <!-- Validation: min 8 char, max 100 char, required -->
+        <input class="form-control" type="text" name="address" [(ngModel)]="user.address"
+          pattern="^[A-ZÁÉÓÖŐÜÚŰÍ0-9].{7,99}" required>
+      </div>
+      <div [hidden]="userForm.controls.address?.valid" class="error-message m-1">A cím minimum 8 maximum 100 karakter
+        hosszú, kezdődhet számmal vagy nagy betűvel!</div>
       <div class="form-group">
         <label>Active</label>
         <!-- No validation. -->
@@ -39,7 +36,7 @@
           <option [ngValue]="false">inactive</option>
         </select>
       </div>
-      <button type="submit" class="btn btn-primary btn-block mt-5">
+      <button [disabled]="userForm.invalid || clicked" type="submit" class="btn btn-primary btn-block mt-5">
         <i class="fa fa-save"></i>
       </button>
     </form>
